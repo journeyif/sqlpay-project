@@ -1,5 +1,7 @@
 package com.sqlpay.project.config.advice;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sqlpay.project.config.annotation.IgnoreResponseAdvice;
 import com.sqlpay.project.result.ResultData;
 import org.springframework.core.MethodParameter;
@@ -38,6 +40,7 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
         return true;
     }
 
+
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter,
                                   MediaType mediaType,
@@ -47,6 +50,15 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
         if (null == o) {
             // 如果返回值为null,直接返回0
             return ResultData.fail(0, "");
+        } else if (o instanceof String) {
+            //当返回类型是String时，用的是StringHttpMessageConverter转换器，无法转换为Json格式
+            //必须在方法体上标注RequestMapping(produces = "application/json; charset=UTF-8")
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                return objectMapper.writeValueAsString(ResultData.success(o));
+            } catch (JsonProcessingException e) {
+                return ResultData.fail(0, "");
+            }
         } else if (o instanceof ResultData) {
             // ResultData直接返回
             return o;

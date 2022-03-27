@@ -1,0 +1,23 @@
+### 保存
+POST http://127.0.0.1:10001/test/result/save
+Content-Type: application/json
+
+{
+  "name": "信息1",
+  "logo": "logoUrl"
+}
+
+### 列表
+GET http://127.0.0.1:10001/test/result/list
+
+### 列表(返回值不封装)
+GET http://127.0.0.1:10001/test/result/ignoreList
+
+### 抛出异常
+GET http://127.0.0.1:10001/test/result/threwTest?i=0
+
+### 返回str
+GET http://127.0.0.1:10001/test/result/returnStr
+
+### 返回str 使用RequestMapping(produces = "application/json; charset=UTF-8")
+GET http://127.0.0.1:10001/test/result/returnStrUTF8

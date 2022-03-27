@@ -59,4 +59,14 @@ public class BrandController {
         }
         return i;
     }
+
+    @GetMapping("/returnStr")
+    public Object returnStr() {
+        return "str";
+    }
+
+    @GetMapping(value = "/returnStrUTF8", produces = "application/json; charset=UTF-8")
+    public Object returnStrUTF8() {
+        return "str";
+    }
 }
